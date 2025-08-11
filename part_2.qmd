@@ -9,13 +9,15 @@
 library(tidyverse)
 library(ggformula)
 
-n <- 10000
 theme_set(theme_bw())
 
-set.seed(1)
+n <- 10000
+delta <- 0.5
 ```
 
 ```{r}
+set.seed(1)
+
 # Panel A (red)
 df1 <- tibble(
   x = rnorm(n),
@@ -49,12 +51,14 @@ As you can see, all three scripts produce the same joint distribution between $x
 gf_point(y ~ x | panel, data = df_obs, alpha = 0.05, color = ~ panel) |> gf_lm()
 ```
 
-But despite the three scripts being equivalent in that they generate the same joint distribution between $x$ and $y$, they are not the same. For example, they behave differently if we interefere or intervene to the execution.
+But despite the three scripts being equivalent in that they generate the same joint distribution between $x$ and $y$, they are not the same. For example, they behave differently if we interfere or intervene to the execution.
 
 ```{r}
+set.seed(1)
+
 # Panel A (red)
 df1 <- tibble(
-  x = 3,
+  x = 3, # replace causal mechanism of X to always output 3, i.e., intervene to set X = 3
   y = x + 1 + sqrt(3) * rnorm(n),
   panel = "A"
 )
@@ -62,7 +66,7 @@ df1 <- tibble(
 # Panel B (green)
 df2 <- tibble(
   y = 1 + 2 * rnorm(n),
-  x = 3,
+  x = 3, # replace causal mechanism of X to always output 3, i.e., intervene to set X = 3
   panel = "B"
 )
 
@@ -70,7 +74,7 @@ df2 <- tibble(
 df3 <- tibble(
   z = rnorm(n),
   y = z + 1 + sqrt(3) * rnorm(n),
-  x = 3,
+  x = 3, # replace causal mechanism of X to always output 3, i.e., intervene to set X = 3
   panel = "C"
 )
 
@@ -88,8 +92,33 @@ gf_density(~ y, data = df_int, alpha = 0.5, fill = ~ panel)
 This is generally different from the conditional distribution p(y\|x=3), which of course is the same for all three scripts.
 
 ```{r}
-delta <- 0.5
-gf_density(~ y , data = df_obs |> filter(abs(x - 3) < delta), alpha = 0.5, fill = ~ panel) + expand_limits(x = c(-4, 12))
+set.seed(1)
+
+# Panel A (red)
+df1 <- tibble(
+  x = rnorm(n),
+  y = x + 1 + sqrt(3) * rnorm(n),
+  panel = "A"
+) |> filter(abs(x - 3) < delta) # condition on X=3
+
+# Panel B (green)
+df2 <- tibble(
+  y = 1 + 2 * rnorm(n),
+  x = (y - 1) / 4 + sqrt(3) * rnorm(n) / 2,
+  panel = "B"
+) |> filter(abs(x - 3) < delta) # condition on X=3
+
+# Panel C (blue)
+df3 <- tibble(
+  z = rnorm(n),
+  y = z + 1 + sqrt(3) * rnorm(n),
+  x = z,
+  panel = "C"
+) |> filter(abs(x - 3) < delta) # condition on X=3
+
+df_cnd <- bind_rows(df1, df2, df3)
+
+gf_density(~ y, data = df_cnd, alpha = 0.5, fill = ~ panel) + expand_limits(x = c(-4, 12))
 ```
 
 The important point here is that the scripts are indistinguishable when you only look at the joint distribution of the samples they produce, yet they behave differently under intervention.
@@ -109,6 +138,8 @@ Graphically, to simulate the effect of an intervention, you *mutilate* the graph
 ![](images/clipboard-36456747.png)
 
 ```{r}
+set.seed(1)
+
 # Panel A (red)
 df1 <- tibble(
   x = rnorm(n),
@@ -121,7 +152,7 @@ df2 <- tibble(
   y = 1 + 2 * rnorm(n),
   x = (y - 1) / 4 + sqrt(3) * rnorm(n) / 2,
   panel = "B"
-)
+) # do NOT condition on X=3 to match the intervention
 
 # Panel C (blue)
 df3 <- tibble(
@@ -129,7 +160,7 @@ df3 <- tibble(
   y = z + 1 + sqrt(3) * rnorm(n),
   x = z,
   panel = "C"
-)
+) # do NOT condition on X=3 to match the intervention
 
 df_obs <- bind_rows(df1, df2, df3)
 
