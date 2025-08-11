@@ -1,0 +1,26 @@
+project:
+  type: book
+
+book:
+  title: "An intro to causal inference and do-calculus"
+  author: "Edoardo Marcora"
+  date: "8/11/2025"
+  chapters:
+    - index.qmd
+    - part_1.qmd
+    - part_2.qmd
+    - part_3.qmd
+    - part_4.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+  pdf:
+    documentclass: scrreprt
+
+editor: source
+

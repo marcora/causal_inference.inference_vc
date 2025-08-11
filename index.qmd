@@ -1,0 +1,3 @@
+# Preface {.unnumbered}
+
+This "book" is inspired by (i.e., shamelessly ripped from) this [4-part series on causal inference](https://www.inference.vc/untitled) written by Ferenc Huszár.

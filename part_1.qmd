@@ -1,0 +1,37 @@
+# Introduction to causal inference and do-calculus
+
+First of all, causal inference differentiates between two types of conditional distributions one might want to derive from a joint distribution $p(x, y, z, \ldots)$:
+
+$$
+p(y \mid x)
+$$
+
+$$
+p(y \mid \text{do}(x))
+$$
+
+The first is the distribution of $y$ given that I observe $X = x$, i.e., the *observational* conditional distribution.
+
+The second is the distribution of $y$ given that I assign the value $x$ to $X$ ($X := x$), i.e., the *interventional* conditional distribution.
+
+$p(y \mid x)$ and $p(y \mid \text{do}(x))$ are not generally the same, and you can verify this with a simple thought experiment.
+
+Let's say we jointly observe $X$ (ice cream sales) and $Y$ (shark attacks). They are correlated/statistically dependent and therefore seeing $X = x$ allows me to predict the value of $Y$, but $Y$ is not caused by $X$ and therefore setting the value of $X$ to $x$ won't affect the distribution of $Y$. In other words:
+
+$$
+p(y \mid x) \ne p(y)
+$$
+
+$$
+p(y \mid \text{do}(x)) = p(y)
+$$
+
+Depending on the purpose of your statistical model, you should seek to estimate one of these conditionals. If your ultimate goal is diagnosis or forecasting (i.e. observing a naturally occurring $x$ and inferring the probable values of \$y\$) you want the observational conditional $p(y \mid x)$. This is what we already do in supervised learning and regression analysis. But if $x$ is a medical treatment and $y$ is the disease outcome, you are not merely interested in diagnosis or forecasting. You are interested in inferring the effect of administering $x$ on $y$.
+
+$p(y \mid \text{do}(x))$ is in fact a vanilla conditional distribution, but it's not computed based on the joint distribution $p(x, y, z, \ldots)$, but rather based on a modified joint distribution $p'(x, y, z, \ldots)$ where the mechanism that generates $X$ has been replaced by a mechanism that always outputs $x$. This is the joint distribution which we would observe if we actually carried out the intervention in question. $p(y \mid \text{do}(x))$ is the conditional distribution we would learn from data collected in an experiment like a randomized controlled trial or A/B test where the experimenter controls x. Note that actually carrying out the intervention or experiment may be impossible or at least impractical or unethical in many situations.
+
+The main point of causal inference and do-calculus is: If I cannot estimate $p(y \mid \text{do}(x))$ directly with a randomized controlled trial, can I estimate it based on data I observed outside of a controlled experiment?
+
+XXX
+
+The mapping from causal diagrams to joint distributions is many-to-one: several causal diagrams are compatible with the same joint distribution. Thus, it is generally impossible to conclusively choose between different causal explanations by looking at observed data only.

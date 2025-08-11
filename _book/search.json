@@ -1,0 +1,52 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "An intro to causal inference and do-calculus",
+    "section": "",
+    "text": "Preface\nThis “book” is inspired by (i.e., shamelessly ripped from) this 4-part series on causal inference written by Ferenc Huszár.",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "part_1.html",
+    "href": "part_1.html",
+    "title": "1  Introduction to causal inference and do-calculus",
+    "section": "",
+    "text": "First of all, causal inference differentiates between two types of conditional distributions one might want to derive from a joint distribution \\(p(x, y, z, \\ldots)\\):\n\\[\np(y \\mid x)\n\\]\n\\[\np(y \\mid \\text{do}(x))\n\\]\nThe first is the distribution of \\(y\\) given that I observe \\(X = x\\), i.e., the observational conditional distribution.\nThe second is the distribution of \\(y\\) given that I assign the value \\(x\\) to \\(X\\) (\\(X := x\\)), i.e., the interventional conditional distribution.\n\\(p(y \\mid x)\\) and \\(p(y \\mid \\text{do}(x))\\) are not generally the same, and you can verify this with a simple thought experiment.\nLet’s say we jointly observe \\(X\\) (ice cream sales) and \\(Y\\) (shark attacks). They are correlated/statistically dependent and therefore seeing \\(X = x\\) allows me to predict the value of \\(Y\\), but \\(Y\\) is not caused by \\(X\\) and therefore setting the value of \\(X\\) to \\(x\\) won’t affect the distribution of \\(Y\\). In other words:\n\\[\np(y \\mid x) \\ne p(y)\n\\]\n\\[\np(y \\mid \\text{do}(x)) = p(y)\n\\]\nDepending on the purpose of your statistical model, you should seek to estimate one of these conditionals. If your ultimate goal is diagnosis or forecasting (i.e. observing a naturally occurring \\(x\\) and inferring the probable values of $y$) you want the observational conditional \\(p(y \\mid x)\\). This is what we already do in supervised learning and regression analysis. But if \\(x\\) is a medical treatment and \\(y\\) is the disease outcome, you are not merely interested in diagnosis or forecasting. You are interested in inferring the effect of administering \\(x\\) on \\(y\\).\n\\(p(y \\mid \\text{do}(x))\\) is in fact a vanilla conditional distribution, but it’s not computed based on the joint distribution \\(p(x, y, z, \\ldots)\\), but rather based on a modified joint distribution \\(p'(x, y, z, \\ldots)\\) where the mechanism that generates \\(X\\) has been replaced by a mechanism that always outputs \\(x\\). This is the joint distribution which we would observe if we actually carried out the intervention in question. \\(p(y \\mid \\text{do}(x))\\) is the conditional distribution we would learn from data collected in an experiment like a randomized controlled trial or A/B test where the experimenter controls x. Note that actually carrying out the intervention or experiment may be impossible or at least impractical or unethical in many situations.\nThe main point of causal inference and do-calculus is: If I cannot estimate \\(p(y \\mid \\text{do}(x))\\) directly with a randomized controlled trial, can I estimate it based on data I observed outside of a controlled experiment?\nXXX\nThe mapping from causal diagrams to joint distributions is many-to-one: several causal diagrams are compatible with the same joint distribution. Thus, it is generally impossible to conclusively choose between different causal explanations by looking at observed data only.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to causal inference and do-calculus</span>"
+    ]
+  },
+  {
+    "objectID": "part_2.html",
+    "href": "part_2.html",
+    "title": "2  Introduction",
+    "section": "",
+    "text": "This is a book created from markdown and executable code.\nSee Knuth (1984) for additional discussion of literate programming.\n\n1 + 1\n\n[1] 2\n\n\n\n\n\n\nKnuth, Donald E. 1984. “Literate Programming.” Comput. J. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "part_3.html",
+    "href": "part_3.html",
+    "title": "3  Introduction",
+    "section": "",
+    "text": "This is a book created from markdown and executable code.\nSee Knuth (1984) for additional discussion of literate programming.\n\n1 + 1\n\n[1] 2\n\n\n\n\n\n\nKnuth, Donald E. 1984. “Literate Programming.” Comput. J. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "part_4.html",
+    "href": "part_4.html",
+    "title": "4  Introduction",
+    "section": "",
+    "text": "This is a book created from markdown and executable code.\nSee Knuth (1984) for additional discussion of literate programming.\n\n1 + 1\n\n[1] 2\n\n\n\n\n\n\nKnuth, Donald E. 1984. “Literate Programming.” Comput. J. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Introduction</span>"
+    ]
+  }
+]
