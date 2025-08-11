@@ -1,5 +1,7 @@
 # Introduction to causal inference and do-calculus
 
+<https://www.inference.vc/untitled>
+
 First of all, causal inference differentiates between two types of conditional distributions one might want to derive from a joint distribution $p(x, y, z, \ldots)$:
 
 $$
@@ -34,4 +36,14 @@ The main point of causal inference and do-calculus is: If I cannot estimate $p(y
 
 XXX
 
+Coming up with a causal model is a modeling step where we have to consider assumptions about how the world works, what causes what. Once we have a causal diagram, we can emulate the effect of intervention by mutilating the causal graph: deleting all edges that lead into the node in the $\text{do}$ operator.
+
 The mapping from causal diagrams to joint distributions is many-to-one: several causal diagrams are compatible with the same joint distribution. Thus, it is generally impossible to conclusively choose between different causal explanations by looking at observed data only.
+
+Do-calculus extends probability theory with four additional rules we can apply to conditional distributions with the $\text{do}$ operator in them. These rules take into account properties of the causal diagram. Here is [an introductory paper on them](https://arxiv.org/abs/1305.5506?ref=inference.vc).
+
+Ideally, as a result of a do-calculus derivation you end up with an equivalent formula for $p(y \mid \text{do}(x))$ which no longer has any $\text{do}$ operators in them, so you estimate it from observational data alone. If this is the case we say that the causal query $p(y \mid \text{do}(x))$ is *identifiable*. Conversely, if this is not possible, no matter how hard we try applying do-calculus, we call the causal query *non-identifiable*, which means that we won't be able to estimate it from the data we have.
+
+You can never fully verify the validity and completeness of your causal diagram based on observed data alone. However, there are certain aspects of the causal model which are empirically testable. In particular, the causal diagram implies certain conditional independence or dependence relationships between sets of variables. These dependencies or independencies can be empirically tested, and if they are not present in the data, that is an indication that your causal model is wrong. Taking this idea forward you can attempt to perform full causal discovery: attempting to infer the causal model or at least aspects of it, from empirical data.
+
+But the bottom line is: a full causal model is a form of prior knowledge that you have to add to your analysis in order to get answers to causal questions without actually carrying out interventions. Reasoning with data alone won't be able to give you this. Unlike priors in Bayesian analysis - which are a nice-to-have and can improve data-efficiency - causal diagrams in causal inference are a must-have. With a few exceptions, all you can do without them is running randomized controlled experiments.

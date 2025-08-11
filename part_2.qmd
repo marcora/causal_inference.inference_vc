@@ -1,1 +1,136 @@
 # Illustrating interventions with toy simulations
+
+<https://www.inference.vc/causal-inference-2-illustrating-interventions-in-a-toy-example/>
+
+![](images/clipboard-1927333045.png)
+
+```{r}
+library(tidyverse)
+library(ggformula)
+
+n <- 10000
+theme_set(theme_bw())
+
+set.seed(1)
+```
+
+```{r}
+# Panel A (red)
+df1 <- tibble(
+  x = rnorm(n),
+  y = x + 1 + sqrt(3) * rnorm(n),
+  panel = "A"
+)
+
+# Panel B (green)
+df2 <- tibble(
+  y = 1 + 2 * rnorm(n),
+  x = (y - 1) / 4 + sqrt(3) * rnorm(n) / 2,
+  panel = "B"
+)
+
+# Panel C (blue)
+df3 <- tibble(
+  z = rnorm(n),
+  y = z + 1 + sqrt(3) * rnorm(n),
+  x = z,
+  panel = "C"
+)
+
+df_obs <- bind_rows(df1, df2, df3)
+
+gf_point(y ~ x | panel, data = df_obs, alpha = 0.05, color = ~ panel)
+```
+
+As you can see, all three scripts produce the same joint distribution between $x$ and $y$. You can feed these distributions into a two-sample test, and you will find that they are indeed indistinguishable from each other.
+
+```{r}
+gf_point(y ~ x | panel, data = df_obs, alpha = 0.05, color = ~ panel) |> gf_lm()
+```
+
+But despite the three scripts being equivalent in that they generate the same joint distribution between $x$ and $y$, they are not the same. For example, they behave differently if we interefere or intervene to the execution.
+
+```{r}
+# Panel A (red)
+df1 <- tibble(
+  x = 3,
+  y = x + 1 + sqrt(3) * rnorm(n),
+  panel = "A"
+)
+
+# Panel B (green)
+df2 <- tibble(
+  y = 1 + 2 * rnorm(n),
+  x = 3,
+  panel = "B"
+)
+
+# Panel C (blue)
+df3 <- tibble(
+  z = rnorm(n),
+  y = z + 1 + sqrt(3) * rnorm(n),
+  x = 3,
+  panel = "C"
+)
+
+df_int <- bind_rows(df1, df2, df3)
+
+gf_point(y ~ x | panel, data = df_int, alpha = 0.005, color = ~ panel)
+```
+
+Of course, we see that the value of x is no longer random, it's deterministically set to 3, this results in all samples lining up along the x=3 vertical line. But, interestingly, the distribution of y is different for the different scripts. In the blue script, y has a mean around 5 while the green and red scripts produce a distribution of y centered around a mean of 1. Here is a better look at the marginal distribution of y under the intervention:
+
+```{r}
+gf_density(~ y, data = df_int, alpha = 0.5, fill = ~ panel)
+```
+
+This is generally different from the conditional distribution p(y\|x=3), which of course is the same for all three scripts.
+
+```{r}
+delta <- 0.5
+gf_density(~ y , data = df_obs |> filter(abs(x - 3) < delta), alpha = 0.5, fill = ~ panel) + expand_limits(x = c(-4, 12))
+```
+
+The important point here is that the scripts are indistinguishable when you only look at the joint distribution of the samples they produce, yet they behave differently under intervention.
+
+Consequently, the joint distribution of data alone is insufficient to predict the effects of interventions.
+
+If the joint distribution is insufficient, what level of description would allow us to make predictions about how the scripts behave under intervention. If I have the full source code, I can of course execute the modified scripts, i.e. run an experiment and directly observe how the interaction effects the distribution.
+
+However, it turns out, you don't need the full source code. It is sufficient to know the causal diagram corresponding to the source code. The causal diagram encodes causal relationships between variables, with an arrow pointing from causes to effects. Here is what the causal diagrams would look like for these scripts:
+
+![](images/clipboard-1791079950.png)
+
+We can see that, even though they produce the same joint distribution, the scripts have different causal diagrams. And this additional knowledge of the causal structure allows us to make inferences about intervention without actually running experiments with that intervention. To do this, we can use do-calculus.
+
+Graphically, to simulate the effect of an intervention, you *mutilate* the graph by removing all edges that point into the variable on which the intervention is applied, in this case $x$.
+
+![](images/clipboard-36456747.png)
+
+```{r}
+# Panel A (red)
+df1 <- tibble(
+  x = rnorm(n),
+  y = x + 1 + sqrt(3) * rnorm(n),
+  panel = "A"
+) |> filter(abs(x - 3) < delta) # condition on X=3 to match the intervention
+
+# Panel B (green)
+df2 <- tibble(
+  y = 1 + 2 * rnorm(n),
+  x = (y - 1) / 4 + sqrt(3) * rnorm(n) / 2,
+  panel = "B"
+)
+
+# Panel C (blue)
+df3 <- tibble(
+  z = rnorm(n),
+  y = z + 1 + sqrt(3) * rnorm(n),
+  x = z,
+  panel = "C"
+)
+
+df_obs <- bind_rows(df1, df2, df3)
+
+gf_density(~ y, data = df_int, alpha = 0.5, fill = ~ panel)
+```
