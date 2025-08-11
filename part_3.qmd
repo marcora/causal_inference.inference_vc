@@ -1,1 +1,3 @@
 # Counterfactuals
+
+<https://www.inference.vc/causal-inference-3-counterfactuals/>

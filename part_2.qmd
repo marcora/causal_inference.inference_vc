@@ -5,6 +5,7 @@
 ![](images/clipboard-1927333045.png)
 
 ```{r}
+#| output: false
 library(tidyverse)
 library(ggformula)
 
