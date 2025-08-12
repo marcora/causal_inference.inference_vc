@@ -13,8 +13,6 @@ book:
     - part_3.qmd
     - part_4.qmd
 
-bibliography: references.bib
-
 format:
   html:
     theme:

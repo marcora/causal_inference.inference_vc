@@ -162,7 +162,7 @@ df3 <- tibble(
   panel = "C"
 ) # do NOT condition on X=3 to match the intervention
 
-df_obs <- bind_rows(df1, df2, df3)
+df_int_from_obs <- bind_rows(df1, df2, df3)
 
-gf_density(~ y, data = df_int, alpha = 0.5, fill = ~ panel)
+gf_density(~ y, data = df_int_from_obs, alpha = 0.5, fill = ~ panel)
 ```

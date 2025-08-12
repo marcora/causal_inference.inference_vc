@@ -407,9 +407,9 @@ window.Quarto = {
 <span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">panel =</span> <span class="st">"C"</span></span>
 <span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>) <span class="co"># do NOT condition on X=3 to match the intervention</span></span>
 <span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>df_obs <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(df1, df2, df3)</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>df_int_from_obs <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(df1, df2, df3)</span>
 <span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_density</span>(<span class="sc">~</span> y, <span class="at">data =</span> df_int, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">fill =</span> <span class="sc">~</span> panel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_density</span>(<span class="sc">~</span> y, <span class="at">data =</span> df_int_from_obs, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">fill =</span> <span class="sc">~</span> panel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
